@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import PaginationIndicator from './PaginationIndicator'; // Import the PaginationIndicator component
-import { styles } from './styles'; // Import your common styles
+import { styles } from './Styles'; // Import your common styles
 
 const OnboardingScreen3 = ({ navigation }) => {
   return (
