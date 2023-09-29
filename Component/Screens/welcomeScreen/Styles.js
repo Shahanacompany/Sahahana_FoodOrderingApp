@@ -41,34 +41,9 @@ export const styles = StyleSheet.create({
 
   // ... Other styles
 
-  button: {
-    // marginTop: 40,
-    width: 250,
-    backgroundColor: 'black',
-    borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+  buttonImage: {
+    width: 100, // Adjust the width as needed
+    height: 100, // Adjust the height as needed
   },
-
-  buttonText: {
-    color: 'white',
-    fontSize: 40,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 0.15,
-  },
-
-  // Define hover styles
-  buttonHovered: {
-    backgroundColor: 'white',
-    borderColor: 'black',
-  },
-
-  buttonTextHovered: {
-    color: 'black',
-  },
-
 
 });

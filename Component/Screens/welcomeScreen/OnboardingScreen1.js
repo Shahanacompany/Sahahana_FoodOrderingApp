@@ -1,53 +1,61 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import PaginationIndicator from './PaginationIndicator'; // Import the PaginationIndicator component
-import { styles } from './Styles'; // Import your common styles
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import CustomPaginationIndicator from './CustomPaginationIndicator';
+import { styles } from './Styles';
 
-const OnboardingScreen1 = ({ navigation }) => {
+const OnboardingScreen1 = () => {
+  const navigation = useNavigation();
   const [isHovered, setIsHovered] = useState(false);
+  const [fadeAnim] = useState(new Animated.Value(0)); // Initial opacity is 0
+
+  useEffect(() => {
+    // Fade in animation when component mounts
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500, // Adjust the duration as needed
+      useNativeDriver: true, // Add this line for performance
+    }).start();
+  }, []);
 
   const handleButtonPress = () => {
-    // Add your navigation logic here when the button is pressed
-    navigation.navigate('OnboardingScreen2');
+    // Fade out animation when navigating to the next screen
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500, // Adjust the duration as needed
+      useNativeDriver: true, // Add this line for performance
+    }).start(() => {
+      navigation.navigate('OnboardingScreen2');
+    });
   };
 
-  const buttonStyles = [
-    styles.button,
-    isHovered && styles.buttonHovered, // Apply hover styles when isHovered is true
-  ];
-
-  const buttonTextStyles = [
-    styles.buttonText,
-    isHovered && styles.buttonTextHovered, // Apply hover styles to text
-  ];
+  const scale = isHovered ? 1.1 : 1;
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       <View style={styles.contentContainer}>
         <Image source={require('./Img/Logo1.png')} style={styles.logo} />
-
         <Text style={styles.heading}>Welcome to Hotel Shahana</Text>
         <Text style={styles.text}>The flavors come from the culture of nature.</Text>
 
-        {/* Use TouchableOpacity for the button to handle the press event */}
         <TouchableOpacity
-          style={buttonStyles}
+          style={styles.button}
           onPress={handleButtonPress}
-          onMouseEnter={() => setIsHovered(true)} // Set isHovered to true on mouse enter
-          onMouseLeave={() => setIsHovered(false)} // Set isHovered to false on mouse leave
+          onPressIn={() => setIsHovered(true)}
+          onPressOut={() => setIsHovered(false)}
         >
-          <Text style={buttonTextStyles}>Continue</Text>
+          <Animated.Image
+            source={require('./Img/next2.png')}
+            style={[styles.buttonImage, { transform: [{ scale }] }]}
+          />
         </TouchableOpacity>
       </View>
-
-      {/* PaginationIndicator component */}
-      <PaginationIndicator currentPage={1} totalScreens={3} style={styles.pagination} />
-    </View>
+      <CustomPaginationIndicator
+        currentPage={1}
+        totalScreens={3}
+        style={styles.pagination} // You can customize the style here
+      />    </Animated.View>
   );
 };
 
-
 export default OnboardingScreen1;
-
-
-
